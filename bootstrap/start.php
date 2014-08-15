@@ -27,7 +27,7 @@ $app = new Illuminate\Foundation\Application;
 $env = $app->detectEnvironment(array(
 
     'local' => array('Crablinks'), // Change this to your local machine hostname.
-    'staging' => array('your-staging-machine-name'),
+    'staging' => array('ssh://bitbucket.org/DerrickJames/tippy.git'),
     'production' => array('your-production-machine-name'),
 
 ));
