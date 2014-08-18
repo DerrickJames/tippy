@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Redirect;
 
 class BaseController extends Controller {
 
