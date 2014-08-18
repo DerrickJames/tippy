@@ -1,6 +1,15 @@
 <?php
 
+use Illuminate\Support\Facades\View;
+
 class BaseController extends Controller {
+
+	/**
+	 * The layout used by the controller.
+	 *
+	 * @var Illuminate\View\View
+	 **/
+	protected $layout = 'layouts.default';
 
     /**
      * Initializer.
@@ -24,6 +33,54 @@ class BaseController extends Controller {
 		{
 			$this->layout = View::make($this->layout);
 		}
+	}
+
+	/**
+	 * Set the specified view as content on the layout.
+	 *
+	 * @param string $path
+	 * @param array  $data
+	 * @return void
+	 * @author 
+	 **/
+	public function view($path, $data = [])
+	{
+		$this->layout->content = View::make($path, $data);
+	}
+
+	/**
+	 * Redirect to the specified route.
+	 *
+	 * @param string $route
+	 * @param array $params
+	 * @param array $data
+	 * @return \Illuminate\Http\RedirectResponse
+	 **/
+	public function redirectRoute($route, $params = [], $data = [])
+	{
+		return Redirect::route($route, $params)->with($data);
+	}
+
+	/**
+	 * Redirect back with old input.
+	 *
+	 * @param array $data
+	 * @return \Illuminate\Http\Response
+	 **/
+	public function redirectBack($data = [])
+	{
+		return Redirect::back()->withInput()->with($data);
+	}
+
+	/**
+	 * Redirect logged in user to the previoously intended url.
+	 *
+	 * @param mixed $default
+	 * @return \Illuminate\Http\RedirectResponse
+	 **/
+	protected function redirectIntended($default = null)
+	{
+		Redirect::intended($default);
 	}
 
 }
