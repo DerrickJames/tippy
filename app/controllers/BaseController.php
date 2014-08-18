@@ -11,7 +11,7 @@ class BaseController extends Controller {
 	 *
 	 * @var Illuminate\View\View
 	 **/
-	protected $layout = 'layouts.default';
+	protected $layout = 'site.layouts.default';
 
     /**
      * Initializer.
