@@ -43,7 +43,7 @@ class BaseController extends Controller {
 	 * @return void
 	 * @author 
 	 **/
-	public function view($path, $data = [])
+	protected function view($path, $data = [])
 	{
 		$this->layout->content = View::make($path, $data);
 	}
@@ -56,7 +56,7 @@ class BaseController extends Controller {
 	 * @param array $data
 	 * @return \Illuminate\Http\RedirectResponse
 	 **/
-	public function redirectRoute($route, $params = [], $data = [])
+	protected function redirectRoute($route, $params = [], $data = [])
 	{
 		return Redirect::route($route, $params)->with($data);
 	}
@@ -67,7 +67,7 @@ class BaseController extends Controller {
 	 * @param array $data
 	 * @return \Illuminate\Http\Response
 	 **/
-	public function redirectBack($data = [])
+	protected function redirectBack($data = [])
 	{
 		return Redirect::back()->withInput()->with($data);
 	}
