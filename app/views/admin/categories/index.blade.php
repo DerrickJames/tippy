@@ -20,13 +20,13 @@
                <tbody id="sortable">
                 @foreach($categories as $category)
                 <tr rel="{{ $category->id }}">
-                    <td><a href="{{url('admin/categories/view/'.$category->id)}}">{{ $category->name }}</a></td>
+                    <td><a href="{{URL::route('admin.categories.edit', $category->id)}}">{{ $category->name }}</a></td>
                     <td>{{ $category->description}}<br>
                     </td>
                     <td></td>
                     <td>
                         <div class="btn-group pull-right">
-                        <a class="btn btn-primary btn-sm" href="{{url('admin/categories/view/'.$category->id)}}">Edit</a>
+                        <a class="btn btn-primary btn-sm" href="{{URL::route('admin.categories.edit', $category->id)}}">Edit</a>
                         <a class="delete_toggler btn btn-danger btn-sm" rel="{{$category->id}}">Delete</a>
                         </div>
                     </td>

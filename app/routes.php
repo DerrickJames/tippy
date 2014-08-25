@@ -99,6 +99,16 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
         'uses'  => 'admin\CategoriesController@store'
     ]);
 
+    Route::get('/categories/{id}/edit', [
+        'as'    => 'admin.categories.edit',
+        'uses'  => 'admin\CategoriesController@edit'
+    ]);
+
+    Route::put('/categories/{id}', [
+        'as'    => 'admin.categories.update',
+        'uses'  => 'admin\CategoriesController@update'
+    ]);
+
 /** ------------------------------------------
  *  Frontend Routes
  *  ------------------------------------------

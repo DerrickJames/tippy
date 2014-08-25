@@ -50,7 +50,7 @@ class CategoriesController extends BaseController
 	{
 		$form = $this->categories->getForm();
 
-		if (! $form->isValid()){
+		if (! $form->isValid()) {
 			return $this->redirectRoute('admin.categories.index')
 						->withErrors($form->getErrors())
 						->withInput();
@@ -71,6 +71,27 @@ class CategoriesController extends BaseController
 	{	
 		$category = $this->categories->findById($id);
 
-		$this->view('admin.categories.edit', compact($category));
+		$this->view('admin.categories.edit', compact('category'));
+	}
+
+	/**
+	 * Update the specified tip.
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @param mixed $id
+	 **/
+	public function update($id)
+	{
+		$form = $this->categories->getForm();
+
+		if (! $form->isValid()) {
+			return $this->redirectRoute('admin.categories.edit', $id)
+						->withErrors($form->getErrors())
+						->withInput();
+		}
+
+		$category = $this->categories->update($id, $form->getInputData());
+
+		return $this->redirectRoute('admin.categories.edit', $id);
 	}
 }

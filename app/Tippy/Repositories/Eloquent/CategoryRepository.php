@@ -76,7 +76,7 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
 	 **/
 	public function update($id, array $data)
 	{
-		$category = $this->getNew();
+		$category = $this->findById($id);
 
 		$category->name 		= e($data['name']);
 		$category->slug 		= Str::slug($category->name, '-');
