@@ -109,6 +109,15 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
         'uses'  => 'admin\CategoriesController@update'
     ]);
 
+    Route::get('/categories/{id}', [
+        'as'    => 'admin.categories.destroy',
+        'uses'  => 'admin\CategoriesController@destroy'   
+    ]);
+
+    Route::controller('categories', 'CategoriesController', [
+        
+    ]);
+
 /** ------------------------------------------
  *  Frontend Routes
  *  ------------------------------------------

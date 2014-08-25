@@ -27,7 +27,7 @@
                     <td>
                         <div class="btn-group pull-right">
                         <a class="btn btn-primary btn-sm" href="{{URL::route('admin.categories.edit', $category->id)}}">Edit</a>
-                        <a class="delete_toggler btn btn-danger btn-sm" rel="{{$category->id}}">Delete</a>
+                        <a class="delete_toggler btn btn-danger btn-sm" href="" rel="{{$category->id}}">Delete</a>
                         </div>
                     </td>
                  </tr>
@@ -75,6 +75,25 @@
          </div><!-- /.modal-content -->
        </div><!-- /.modal-dialog -->
      </div><!-- /.modal -->
+
+    <!-- Modal -->
+     <div class="modal fade" id="delete_category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+         <div class="modal-content">
+           <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+             <h4 class="modal-title">Are you sure?</h4>
+           </div>
+           <div class="modal-body">
+                <p class="lead text-center">This Category will be deleted!</p>
+           </div>
+           <div class="modal-footer">
+                <a data-dismiss="modal" href="#delete_category" class="btn btn-default">Keep</a>
+                <a href="" id="delete_link" class="btn btn-danger">Delete</a>
+           </div>
+         </div><!-- /.modal-content -->
+       </div><!-- /.modal-dialog -->
+     </div><!-- /.modal -->     
 @stop
 
 @section('scripts')
@@ -83,6 +102,17 @@
             @if($errors->all())
                 $('#add_category').modal('show');
             @endif
+
+            $('.delete_toggler').each(function(index, elem) {
+                $(elem).click(function(e){
+                    e.preventDefault();
+
+                    var href = '{{ URL::route("admin.categories.destroy") }}/';
+                    console.log(href + $(elem).attr('rel'));
+                    $('#delete_link').attr('href', href + $(elem).attr('rel'));
+                    $('#delete_category').modal('show');
+                });
+            });
         });
     </script>
 @stop

@@ -74,6 +74,8 @@
 		================================================== -->
         <script src="{{ asset('assets/js/jquery.js') }}"></script>
         <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>
+		
+		@yield('scripts');
 
 	</body>
 </html>

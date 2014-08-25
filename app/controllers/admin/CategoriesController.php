@@ -94,4 +94,17 @@ class CategoriesController extends BaseController
 
 		return $this->redirectRoute('admin.categories.edit', $id);
 	}
+
+	/**
+	 * Delete the specified category.
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @param mixed $id
+	 **/
+	public function destroy($id)
+	{	
+		$this->categories->delete($id);
+
+		return $this->redirectRoute('admin.categories.index');
+	}
 }
