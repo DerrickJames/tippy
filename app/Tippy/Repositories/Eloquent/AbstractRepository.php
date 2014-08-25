@@ -1,6 +1,6 @@
 <?php 
 
-namespace \Tippy\Repositories\Eloquent;
+namespace Tippy\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 

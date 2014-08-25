@@ -31,9 +31,11 @@
             "app/models",
             "app/database/migrations",
             "app/database/seeds",
-            "app/tests/library",
-            "app/Tippy"
-        ]
+            "app/tests/library"
+        ],
+        "psr-0": {
+            "Tippy": "app/"
+        }
     },
     "scripts": {
         "pre-update-cmd": [

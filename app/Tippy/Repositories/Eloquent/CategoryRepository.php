@@ -1,10 +1,10 @@
 <?php 
 
-namespace \Tippy\Repositories\Eloquent;
+namespace Tippy\Repositories\Eloquent;
 
-use Tippy\Cateogry;
-use Tippy\Services\Forms\CategoryForm;
+use Tippy\Category;
 use Illuminate\Support\Str;
+use Tippy\Services\Forms\CategoryForm;
 use Tippy\Repositories\CategoryRepositoryInterface;
 
 class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
@@ -85,6 +85,16 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
 		$category->save();
 
 		return $category;
+	}
+
+	/**
+	 * The highest order number from the database.
+	 *
+	 * @return int
+	 **/
+	public function getMaxOrder()
+	{
+		return $this->model->max('order');
 	}
 
 	/**

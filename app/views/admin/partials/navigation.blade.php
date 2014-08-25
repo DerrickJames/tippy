@@ -11,7 +11,7 @@
     			<div class="collapse navbar-collapse navbar-ex1-collapse">
     				<ul class="nav navbar-nav">
     					<li{{ (Request::is('admin') ? ' class="active"' : '') }}><a href="{{{ URL::to('admin') }}}">Browse</a></li>
-                        <li{{ (Request::is('categories') ? ' class="active"' : '') }}><a href="{{{ URL::to('categories') }}}">Categories</a></li>
+                        <li{{ (Request::is('admin/categories*') ? ' class="active"' : '') }}><a href="{{{ URL::route('tippy.admin.categories') }}}">Categories</a></li>
     					<li{{ (Request::is('admin/blogs*') ? ' class="active"' : '') }}><a href="{{{ URL::to('admin/blogs') }}}">Blog</a></li>
     					<li{{ (Request::is('admin/comments*') ? ' class="active"' : '') }}><a href="{{{ URL::to('admin/comments') }}}">Comments</a></li>
     					<li class="dropdown{{ (Request::is('admin/users*|admin/roles*') ? ' active' : '') }}">

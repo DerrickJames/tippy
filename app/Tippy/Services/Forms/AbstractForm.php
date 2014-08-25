@@ -33,7 +33,7 @@ abstract class AbstractForm
 	 *
 	 * @var array
 	 **/
-	protected $messages;
+	protected $messages = [];
 
 	/**
 	 * Create a new form instance

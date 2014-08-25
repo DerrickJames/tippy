@@ -21,7 +21,7 @@ class CategoriesController extends BaseController
 	 * @param \Tippy\Repositories\CategoryRepositoryInterface $category
 	 * @return void
 	 **/
-	public function __construct(CategoryRepositoryInterface $category)
+	public function __construct(CategoryRepositoryInterface $categories)
 	{	
 		parent::__construct();
 
@@ -38,5 +38,39 @@ class CategoriesController extends BaseController
 		$categories = $this->categories->findAll('order', 'asc');
 
 		$this->view('admin.categories.index', compact('categories'));
+	}
+
+	/**
+	 * Store a new category in the database.
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @access public
+	 **/
+	public function store()
+	{
+		$form = $this->categories->getForm();
+
+		if (! $form->isValid()){
+			return $this->redirectRoute('admin.categories.index')
+						->withErrors($form->getErrors())
+						->withInput();
+		}
+
+		$category = $this->categories->create($form->getInputData());
+
+		return $this->redirectRoute('admin.categories.index');
+	}
+
+	/**
+	 * Show the form to update the specified category.
+	 *
+	 * @return \Response
+	 * @param mixed $id
+	 **/
+	public function edit($id)
+	{	
+		$category = $this->categories->findById($id);
+
+		$this->view('admin.categories.edit', compact($category));
 	}
 }

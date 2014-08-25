@@ -72,12 +72,32 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     Route::controller('/', 'AdminDashboardController');
 
     # Categories Management
-    Route::get('categories', array(
-        'as'    => 'categories',
-        'uses'  => 'CategoriesController@index'
-    ));
+    // Route::get('categories', [
+    //     'as'   => 'tippy.admin.categories', 
+    //     'uses' => 'CategoriesController@index'
+    // ]);
+
+    // Route::controller('categories', 'admin\AdminCategoriesController');
+
+    # Browse Categories
+    Route::get('categories/{category_slug}', [
+        'as'    => 'tippy.browse.category',
+        'uses'  => ''
+    ]);
 });
 
+// Route::get('categories', 'admin\CategoriesController@index');
+
+   # Categories Management
+    Route::get('categories', [
+        'as'   => 'admin.categories.index', 
+        'uses' => 'admin\CategoriesController@index'
+    ]);
+
+    Route::post('/categories', [
+        'as'    => 'admin.categories.store',
+        'uses'  => 'admin\CategoriesController@store'
+    ]);
 
 /** ------------------------------------------
  *  Frontend Routes
