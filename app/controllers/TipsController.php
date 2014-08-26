@@ -1,13 +1,15 @@
 <?php
 
-class TipsController extends \BaseController 
+use Tippy\Repositories\TipRepositoryInterface;
+
+class TipsController extends BaseController 
 {
 	/**
 	 * Tip repository
 	 *
 	 * @var \Tippy\Repositories\TipRepositoryInterface
 	 **/
-	protected $tip;	
+	protected $tips;	
 
 	/**
 	 * Create a new TipsController instance.
@@ -15,11 +17,11 @@ class TipsController extends \BaseController
 	 * @return void
 	 * @param \Tippy\Repositories\TipRepositoryInterface $tip
 	 **/
-	public function __construct(TipRepositoryInterface $tip)
+	public function __construct(TipRepositoryInterface $tips)
 	{
 		parent::__construct();
-		
-		$this->tip = $tip;
+
+		$this->tips = $tips;
 	}
 
 	/**
@@ -30,7 +32,9 @@ class TipsController extends \BaseController
 	 */
 	public function index()
 	{
-		//
+		$tips = $this->tips->findAll('created_at', 'desc');
+
+		$this->view('tips.index', compact('tips'));
 	}
 
 	/**
@@ -39,10 +43,10 @@ class TipsController extends \BaseController
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
-		$this->view('tips.create');
-	}
+	// public function create()
+	// {
+	// 	$this->view('tips.create');
+	// }
 
 	/**
 	 * Store a newly created resource in storage.
@@ -52,6 +56,17 @@ class TipsController extends \BaseController
 	 */
 	public function store()
 	{
+		$form = $this->tips->getForm();
+
+		if (! $form->isValid()) {
+			return $this->redirectRoute('tips.index')
+						->withErrors($form->getErrors())
+						->withInput();
+		}
+
+		$tip = $this->tips->create($form->getInputData());
+
+		return $this->redirectRoute('tips.index');
 	}
 
 	/**
@@ -63,7 +78,9 @@ class TipsController extends \BaseController
 	 */
 	public function show($id)
 	{
-		//
+		$tip = $this->tips->findById($id);
+
+		$this->view('tips.show', compact('tip'));
 	}
 
 	/**
@@ -75,7 +92,9 @@ class TipsController extends \BaseController
 	 */
 	public function edit($id)
 	{
-		//
+		$tip = $this->tips->findById($id);
+
+		$this->view('tips.edit', compact('tip'));
 	}
 
 	/**
@@ -87,7 +106,17 @@ class TipsController extends \BaseController
 	 */
 	public function update($id)
 	{
-		//
+		$form = $this->tips->getForm();
+
+		if (! $form->isValid()) {
+			return $this->redirectRoute('tips.edit')
+						->withErrors($form->getErrors())
+						->withInput();
+		}
+
+		$tip = $this->tips->update($id, $form->getInputData());
+
+		return $this->redirectRoute('tips.edit', $id);
 	}
 
 	/**
@@ -99,7 +128,9 @@ class TipsController extends \BaseController
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->tips->delete($id);
+
+		return $this->redirectRoute('tips.index');
 	}
 
 }

@@ -86,8 +86,6 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     ]);
 });
 
-// Route::get('categories', 'admin\CategoriesController@index');
-
    # Categories Management
     Route::get('categories', [
         'as'   => 'admin.categories.index', 
@@ -112,6 +110,37 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     Route::get('/categories/{id}', [
         'as'    => 'admin.categories.delete',
         'uses'  => 'admin\CategoriesController@destroy'   
+    ]);
+
+    # Tips Management
+    Route::get('/tips', [
+        'as'    => 'tips.index',
+        'uses'  => 'TipsController@index'
+    ]);
+
+    Route::get('/tips/{id}', [
+        'as'    => 'tips.show',
+        'uses'  => 'TipsController@show'
+    ]);
+
+    Route::get('/tips/create', [
+        'as'    => 'tips.create',
+        'uses'  => 'TipsController@create'
+    ]);
+
+    Route::post('/tips', [
+        'as'    => 'tips.store',
+        'uses'  => 'TipsController@store'
+    ]);    
+
+    Route::get('/tips/{id}/edit', array(
+        'as'    => 'tips.edit',
+        'uses'  => 'TipsController@edit'
+    ));
+
+    Route::put('/tips/{id}', [
+        'as'    => 'tips.update',
+        'uses'  => 'TipsController@update'
     ]);
 
 

@@ -17,5 +17,10 @@ class RepositoryServiceProvider extends ServiceProvider
 			'Tippy\Repositories\CategoryRepositoryInterface',
 			'Tippy\Repositories\Eloquent\CategoryRepository'
 		);
+
+		$this->app->bind(
+			'Tippy\Repositories\TipRepositoryInterface',
+			'Tippy\Repositories\Eloquent\TipRepository'
+		);
 	}
 }
