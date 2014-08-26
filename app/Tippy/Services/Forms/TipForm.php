@@ -11,6 +11,6 @@ class TipForm extends AbstractForm
 	 **/
 	protected $rules = [
 		'title' => 'required',
-		'image_url'	=> 'required'
+		'filedata'	=> 'required'
 	];	
 }

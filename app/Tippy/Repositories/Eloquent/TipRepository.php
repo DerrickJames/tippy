@@ -4,6 +4,7 @@ namespace Tippy\Repositories\Eloquent;
 
 use Tippy\Tip;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use Tippy\Services\Forms\TipForm;
 use Tippy\Repositories\TipRepositoryInterface;
 
@@ -62,12 +63,15 @@ class TipRepository extends AbstractRepository implements TipRepositoryInterface
 		$tip->title 		= $data['title'];
 		$tip->slug 			= Str::slug($tip->name, '-');
 		$tip->description 	= $data['description'];
-		$tip->image_url 	= $data['image_url'];
 		$tip->user_id 		= $data['user_id'];
 
-		$tip->save();
+		if ($data['filedata']  != '') {
+			// File::move(public_path().'/assets/img/uploads/temp/'.$data['filedata'], 'assets/img/uploads/'.$data['filedata']);
 
-		return $tip;
+			$tip->display_img = $data['filedata'];
+		}
+
+		return $tip->save();
 	}
 
 	/**

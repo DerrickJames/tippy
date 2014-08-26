@@ -1,5 +1,7 @@
 <?php
 
+// use ImageUpload;
+use Illuminate\Support\Facades\Auth;
 use Tippy\Repositories\TipRepositoryInterface;
 
 class TipsController extends BaseController 
@@ -43,10 +45,10 @@ class TipsController extends BaseController
 	 *
 	 * @return Response
 	 */
-	// public function create()
-	// {
-	// 	$this->view('tips.create');
-	// }
+	public function create()
+	{
+		$this->view('tips.create');
+	}
 
 	/**
 	 * Store a newly created resource in storage.
@@ -59,14 +61,22 @@ class TipsController extends BaseController
 		$form = $this->tips->getForm();
 
 		if (! $form->isValid()) {
-			return $this->redirectRoute('tips.index')
+			return $this->redirectRoute('tips.create')
 						->withErrors($form->getErrors())
 						->withInput();
 		}
 
-		$tip = $this->tips->create($form->getInputData());
+		$data = $form->getInputData();
+		$data['user_id']	= Auth::user()->id;
 
-		return $this->redirectRoute('tips.index');
+		// echo "<pre/>";
+		// var_dump($data);
+
+		$tip = $this->tips->create($data);
+
+		echo Response::json(url('assets/js/vendor/uploader'), 200);
+
+		// return $this->redirectRoute('tips.index');
 	}
 
 	/**
@@ -76,11 +86,11 @@ class TipsController extends BaseController
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($slug = null)
 	{
-		$tip = $this->tips->findById($id);
+		// $tip = $this->tips->findById($id);
 
-		$this->view('tips.show', compact('tip'));
+		$this->view('tips.show');
 	}
 
 	/**
@@ -131,6 +141,31 @@ class TipsController extends BaseController
 		$this->tips->delete($id);
 
 		return $this->redirectRoute('tips.index');
+	}
+
+	/**
+	 * Upload a new tip
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function uploadTip()
+	{
+		if (isset($_SERVER['HTTP_ORIGIN'])) {
+			ImageUpload::enableCORS($_SERVER['HTTP_ORIGIN']);
+		}
+
+		if (Request::server('REQUEST_METHOD') == 'OPTIONS') {
+			exit;
+		}
+
+		$json = ImageUpload::handle(Input::file('filedata'));
+
+		if ($json !== false) {
+			return Response::json($json, 200);
+		}
+
+		return Response::json('error', 400);
 	}
 
 }

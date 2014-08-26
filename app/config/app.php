@@ -126,6 +126,7 @@ return array(
 //        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
 
         'Tippy\Providers\RepositoryServiceProvider',
+        'Tippy\Providers\UploadServiceProvider',
 
     ),
 

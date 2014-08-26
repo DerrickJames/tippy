@@ -18,7 +18,7 @@ class CreateTipsTable extends Migration {
 			$table->string('title');
 			$table->string('slug');
 			$table->string('description');
-			$table->string('image_url');
+			$table->string('upload_img');
 			$table->integer('user_id');
 			$table->timestamps();
 		});

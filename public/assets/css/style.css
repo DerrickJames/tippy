@@ -1,0 +1,17 @@
+#upload_img .btn{
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+}
+
+#upload_img .btn input {
+	top: -10px;
+	right: -40px;
+	z-index: 2;
+	position: absolute;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	font-size: 50px;
+}

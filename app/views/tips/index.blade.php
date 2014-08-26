@@ -28,7 +28,6 @@
                         <div class="btn-group pull-right">
                         <a class="btn btn-primary btn-sm" href="{{URL::route('tips.edit', $tip->id)}}">Edit</a>
                         <a class="delete_toggler btn btn-danger btn-sm" href="" rel="{{$tip->id}}">Delete</a>
-                        @include('tips.destroy',[])
                         </div>
                     </td>
                  </tr>

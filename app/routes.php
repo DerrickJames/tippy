@@ -118,7 +118,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
         'uses'  => 'TipsController@index'
     ]);
 
-    Route::get('/tips/{id}', [
+    Route::get('/tips/{tip_slug?}/show', [
         'as'    => 'tips.show',
         'uses'  => 'TipsController@show'
     ]);
@@ -141,6 +141,11 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     Route::put('/tips/{id}', [
         'as'    => 'tips.update',
         'uses'  => 'TipsController@update'
+    ]);
+
+    Route::post('/tips/upload', [
+        'as'    => 'tips.upload',
+        'uses'  => 'TipsController@uploadTip'
     ]);
 
 
