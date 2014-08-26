@@ -15,7 +15,7 @@
         "zizaco/entrust": "~1.2",
         "bllim/datatables": "~1.3",
 	    "laravelbook/ardent": "dev-master",
-        "mccool/laravel-auto-presenter": "*",
+        "mccool/laravel-auto-presenter": "*"
     },
     "require-dev": {
         "way/generators": "~2.6",

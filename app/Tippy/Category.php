@@ -16,6 +16,13 @@ class Category extends Model
 	protected $table = 'categories';
 
 	/**
+	 * Class used to present the model
+	 *
+	 * @var string
+	 **/
+	public $presenter = 'Tippy\Presenter\CategoryPresenter';
+
+	/**
 	 * Query the tips that belong to a category.
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

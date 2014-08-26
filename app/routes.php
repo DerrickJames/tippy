@@ -110,7 +110,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     ]);
 
     Route::get('/categories/{id}', [
-        'as'    => 'admin.categories.destroy',
+        'as'    => 'admin.categories.delete',
         'uses'  => 'admin\CategoriesController@destroy'   
     ]);
 
