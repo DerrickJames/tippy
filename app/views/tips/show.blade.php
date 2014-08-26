@@ -1,0 +1,1 @@
+C:\xampp\htdocs\tippy\app/views/tips/show.blade.php
