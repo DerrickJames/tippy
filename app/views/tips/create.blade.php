@@ -104,7 +104,7 @@ jQuery(function ($){
                 <div id="InputWrapper"></div>
 
   	            <div class="form-group">
-  	              <label for="avatar" class="col-lg-4 control-label">Display Image</label>
+  	              <label for="avatar" class="col-lg-4 control-label">Choose Display Image</label>
   	              <div class="col-lg-8">
   	                <input type="hidden" id="avatar-hidden" name="avatar" value="">
   	                <div id="upload_img" class="upload_img">
