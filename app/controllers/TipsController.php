@@ -1,8 +1,9 @@
 <?php
 
-// use ImageUpload;
+// use Tippy\Facades\ImageUpload;
 use Illuminate\Support\Facades\Auth;
 use Tippy\Repositories\TipRepositoryInterface;
+use Tippy\Services\Upload\ImageUploadService;
 
 class TipsController extends BaseController 
 {
@@ -11,7 +12,11 @@ class TipsController extends BaseController
 	 *
 	 * @var \Tippy\Repositories\TipRepositoryInterface
 	 **/
-	protected $tips;	
+	protected $tips;
+
+	protected $user;	
+
+	protected $comment;
 
 	/**
 	 * Create a new TipsController instance.
@@ -19,11 +24,12 @@ class TipsController extends BaseController
 	 * @return void
 	 * @param \Tippy\Repositories\TipRepositoryInterface $tip
 	 **/
-	public function __construct(TipRepositoryInterface $tips)
+	public function __construct(TipRepositoryInterface $tips, User $user, Comment $comment)
 	{
 		parent::__construct();
 
 		$this->tips = $tips;
+		$this->user = $user;
 	}
 
 	/**
@@ -35,7 +41,6 @@ class TipsController extends BaseController
 	public function index()
 	{
 		$tips = $this->tips->findAll('created_at', 'desc');
-
 		$this->view('tips.index', compact('tips'));
 	}
 
@@ -45,7 +50,7 @@ class TipsController extends BaseController
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function getCreate()
 	{
 		$this->view('tips.create');
 	}
@@ -58,25 +63,23 @@ class TipsController extends BaseController
 	 */
 	public function store()
 	{
-		$form = $this->tips->getForm();
+		$file = Input::file('filedata');
+		$destination = public_path().'/assets/uploads';
+		$extension = Input::file('filedata')->getClientOriginalExtension();
+		$filename = str_random(12).".{$extension}";
+		$upload_success = Input::file('filedata')->move($destination, $filename);
 
-		if (! $form->isValid()) {
-			return $this->redirectRoute('tips.create')
-						->withErrors($form->getErrors())
-						->withInput();
+		if ($upload_success) {
+			$data = [
+				'user_id'	=> Auth::user()->id,
+				'display_img'	=> $filename
+			];
+
+			$tip = $this->tips->create($data);
+			return Response::json('success', 200);
+		} else {
+			return Response::json('error', 400);
 		}
-
-		$data = $form->getInputData();
-		$data['user_id']	= Auth::user()->id;
-
-		// echo "<pre/>";
-		// var_dump($data);
-
-		$tip = $this->tips->create($data);
-
-		echo Response::json(url('assets/js/vendor/uploader'), 200);
-
-		// return $this->redirectRoute('tips.index');
 	}
 
 	/**
@@ -86,11 +89,13 @@ class TipsController extends BaseController
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($slug = null)
+	public function showTip($id)
 	{
-		// $tip = $this->tips->findById($id);
+		$tip 	  = $this->tips->findById($id);
+		
+		$comments = $this->tips->findCommentsByTip($tip['id']);
 
-		$this->view('tips.show');
+		$this->view('tips.show', compact('tip', 'comments'));
 	}
 
 	/**
@@ -141,6 +146,30 @@ class TipsController extends BaseController
 		$this->tips->delete($id);
 
 		return $this->redirectRoute('tips.index');
+	}
+
+	/**
+	 * Create a new comment
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function storeComment()
+	{
+		$validator = Validator::make(
+			$data = ['content' => Input::get('comment'), 'post_id' => Input::get('post_id')],
+					['content' => 'required']
+		);
+		if ($validator->fails())
+		{
+			return Redirect::back()->withErrors($validator)->withInput();
+		}
+		$data['user_id'] = Auth::user()->id;
+		// $data['post_id'] = $id;
+
+		Comment::create($data);
+
+		return Redirect::route('tips.index');
 	}
 
 	/**

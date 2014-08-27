@@ -1,47 +1,55 @@
-@section('title', 'Tips')
+@extends('site.layouts.default')
 
+{{-- Content --}}
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="page-header">
-              <h1>Tips<span class="pull-right"> <a data-toggle="modal" href="{{ URL::route('tips.create') }}" class="btn btn-primary btn-lg">Add new Category</a></span></h1>
-            </div>
+@if (Auth::check())
+    <a href="{{ URL::to('/create') }}" id="" class="btn btn-default pull-right">Add Tip</a>
+@endif
+@if(isset($tips))
 
-            <table class="table">
-               <thead>
-                 <tr>
-                 	<th>Display</th>
-                   	<th>Title</th>
-                   	<th>Description</th>
-                   	<th class="col-lg-3 text-right">Actions</th>
-                 </tr>
-               </thead>
-               <tbody id="sortable">
-                @foreach($tips as $tip)
-                <tr rel="{{ $tip->id }}">
-                	<td></td>
-                    <td><a href="{{URL::route('tips.edit', $tip->id)}}">{{ $tip->title }}</a></td>
-                    <td>{{ $tip->description}}<br>
-                    </td>
-                    <td>
-                        <div class="btn-group pull-right">
-                        <a class="btn btn-primary btn-sm" href="{{URL::route('tips.edit', $tip->id)}}">Edit</a>
-                        <a class="delete_toggler btn btn-danger btn-sm" href="" rel="{{$tip->id}}">Delete</a>
-                        </div>
-                    </td>
-                 </tr>
-                @endforeach
-                </tbody>
-            </table>
+@foreach ($tips as $tip)
+<div class="row">
+    <div class="col-md-8">
+        <!-- Post Title -->
+        <div class="row">
+            <div class="col-md-8">
+                <h4><strong><a href=""><?php echo $tip->title; ?></a></strong></h4>
+
+            </div>
         </div>
+        <!-- ./ post title -->
+
+        <!-- Post Content -->
+        <div class="row">
+            <div class="col-md-2">
+
+                <a href="" class="thumbnail"><img src="{{asset('assets/uploads/'.$tip->display_img) }}" alt=""></a>
+            </div>
+            <div class="col-md-6">
+                <p>
+                    {{ String::tidy(Str::limit($tip->description, 200)) }}
+                </p>
+                <!-- <p><a class="btn btn-mini btn-default" href="">Read more</a></p> -->
+            </div>
+        </div>
+        <!-- ./ post content -->
+
+        <!-- Post Footer -->
+        <div class="row">
+            <div class="col-md-8">
+                <p></p>
+                <p>
+                    <span class="glyphicon glyphicon-user"></span> by <span class="muted">{{ $tip->username }}</span>
+                    | <span class="glyphicon glyphicon-calendar"></span> <!--Sept 16th, 2012-->{{{ $tip->created_at }}}
+                    | <span class="glyphicon glyphicon-comment"></span> <a href="{{ url('tips', $tip->id ) }}">Comment</a>
+            </div>
+        </div>
+        <!-- ./ post footer -->
     </div>
 </div>
 
-@stop
+<hr />
+@endforeach
+@endif
 
-@section('scripts')
-    <script type="text/javascript">
-
-    </script>
 @stop

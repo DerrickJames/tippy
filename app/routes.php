@@ -107,25 +107,25 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
         'uses'  => 'admin\CategoriesController@update'
     ]);
 
-    Route::get('/categories/{id}', [
+    Route::get('/tips/{id}', [
         'as'    => 'admin.categories.delete',
-        'uses'  => 'admin\CategoriesController@destroy'   
+        'uses'  => 'TipsController@showTip'   
     ]);
 
     # Tips Management
-    Route::get('/tips', [
+    Route::get('/', [
         'as'    => 'tips.index',
         'uses'  => 'TipsController@index'
     ]);
 
-    Route::get('/tips/{tip_slug?}/show', [
-        'as'    => 'tips.show',
-        'uses'  => 'TipsController@show'
+    Route::get('/tip/{$id}/show', [
+        'as'    => 'tip.show',
+        'uses'  => 'TipsController@showTip'
     ]);
 
-    Route::get('/tips/create', [
+    Route::get('/create', [
         'as'    => 'tips.create',
-        'uses'  => 'TipsController@create'
+        'uses'  => 'TipsController@getCreate'
     ]);
 
     Route::post('/tips', [
@@ -148,6 +148,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
         'uses'  => 'TipsController@uploadTip'
     ]);
 
+    Route::post('/comment', [
+        'as'    => 'comment.store',
+        'uses'  => 'TipsController@storeComment'
+    ]);
 
 /** ------------------------------------------
  *  Frontend Routes
@@ -184,4 +188,4 @@ Route::get('{postSlug}', 'BlogController@getView');
 Route::post('{postSlug}', 'BlogController@postView');
 
 # Index Page - Last route, no matches
-Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
+// Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));

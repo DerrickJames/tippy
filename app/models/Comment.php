@@ -2,6 +2,8 @@
 
 class Comment extends Eloquent {
 
+    protected $fillable = ['content', 'user_id', 'post_id'];
+
 	/**
 	 * Get the comment's content.
 	 *

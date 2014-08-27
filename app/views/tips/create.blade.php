@@ -25,60 +25,59 @@ jQuery(function ($){
      $('#upload-img').fileapi('upload');
      $('#cropper-preview').fadeOut();
   });
-  $('#upload_img').fileapi({
-    url: '{{ route("tips.upload") }}',
-    autoUpload: true,
-    accept: 'image/*',
-    maxSize: FileAPI.MB*10
+  var FieldCount  = 1;
+  $('body').on('click', '.upload_img', function(e){
+    var id = $(this).attr('class');
+    console.log(id);
+    $('#' + id).fileapi({
+      url: '{{ route("tips.store") }}',
+      autoUpload: true,
+      accept: 'image/*',
+      multiple: true,
+      maxSize: FileAPI.MB*10
+    });
   });
-  // $('#upload-img').fileapi({
-  //    url: '{{ route("tips.upload") }}',
-  //    accept: 'image/*',
-  //    data: { _token: "{{ csrf_token() }}" },
-  //    imageSize: { minWidth: 100, minHeight: 100 },
-  //    elements: {
-  //       active: { show: '.js-upload', hide: '.js-browse' },
-  //       preview: {
-  //          el: '.js-preview',
-  //          width: 96,
-  //          height: 96
-  //       },
-  //       progress: '.js-progress'
-  //    },
 
-  //    onSelect: function (evt, ui){
-  //       var file = ui.all[0];
-  //       if( file ){
-  //         $('#cropper-preview').show();
+  var MaxInputs      = 3;
+  var InputWrapper   = $("#InputWrapper");
+  var AddButton      = $("#AddMoreFiles");
+  var x              = InputWrapper.length;
+  
 
-  //         $('.js-img').cropper({
-  //            file: file,
-  //            bgColor: '#fff',
-  //            maxSize: [$('#cropper-preview').width()-40, $(window).height()-100],
-  //            minSize: [100, 100],
-  //            selection: '90%',
-  //            aspectRatio: 1,
-  //            onSelect: function (coords){
-  //               $('#upload-img').fileapi('crop', file, coords);
-  //            }
-  //         });
-  //       }
-  //    },
+  $(AddButton).click(function(e) {
+    if (x<= MaxInputs) {
+      FieldCount++;
 
-  //   onComplete: function(evt, xhr)
-  //    {
-  //     try {
-  //       var result = FileAPI.parseJSON(xhr.xhr.responseText);
-  //       $('#avatar-hidden').attr("value",result.images.filename);
+      var html = '<div class="form-group">';
+          html += '<label for="avatar" class="col-lg-4 control-label">Display Image</label>';
+          html += '<div class="col-lg-8"><input type="hidden" id="avatar-hidden" name="avatar" value="">';
+          html +=  '<div id="upload_img" class="upload_img">';
+          html +=  '<div class="userpic" style="">';
+          html +=  '<div class="js-preview userpic__preview"></div>';
+          html +=  '</div><div class="btn btn-sm btn-primary js-fileapi-wrapper"><div class="js-browse">';
+          html +=  '<span class="btn-txt">Choose</span><input type="file" name="filedata">';
+          html +=   '</div><div class="js-upload" style="display: none;">';
+          html +=   '<div class="progress progress-success"><div class="js-progress bar"></div></div>';
+          html +=   '<span class="btn-txt">Uploading</span></div></div></div></div><a href="#" class="removeclass">&times;</a></div>';
 
-  //       alert(result.images.filename);
-  //     } catch (er){
-  //       FileAPI.log('PARSE ERROR:', er.message);
+      $(InputWrapper).append(html);
+      x++;
+    } else {
+      alert("Maximum");
+    }
 
-  //       alert(er.message);
-  //     }
-  //    }
-  // });
+    return false;
+  });
+
+  $('body').on('click', '.removeclass', function(e) {
+    if(x > 1) {
+      $(this).parent('div').remove();
+      x--;
+    }
+
+    return false;
+  });
+
 });
 </script>
 @stop
@@ -99,46 +98,33 @@ jQuery(function ($){
                     </div>
                 @endif
                 {{ Form::open(['role' => 'form', 'route' => 'tips.store', 'class'=>'form-horizontal'])}}
-                <div class="form-group">
-                    <label for="title" class="col-lg-2 control-label">Title</label>
-                    <div class="col-lg-10">
-                        {{ Form::text('title',null,array('class'=>'form-control'))}}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="description" class="col-lg-2 control-label">Description</label>
-                    <div class="col-lg-10">
-                        {{ Form::textarea('description',null,array('class'=>'form-control','rows'=>'4'))}}
-                    </div>
-                </div>
 
-	            <div class="form-group">
-	              <label for="avatar" class="col-lg-4 control-label">Display Image</label>
-	              <div class="col-lg-8">
-	                <input type="hidden" id="avatar-hidden" name="avatar" value="">
-	                <div id="upload_img" class="upload-img">
-	                  <div class="userpic" style="background-image: '';">
-	                     <div class="js-preview userpic__preview"></div>
-	                  </div>
-	                  <div class="btn btn-sm btn-primary js-fileapi-wrapper">
-	                     <div class="js-browse">
-	                        <span class="btn-txt">Choose</span>
-	                        <input type="file" name="filedata">
-	                     </div>
-	                     <div class="js-upload" style="display: none;">
-	                        <div class="progress progress-success"><div class="js-progress bar"></div></div>
-	                        <span class="btn-txt">Uploading</span>
-	                     </div>
-	                  </div>
-	                </div>
-	              </div>
-	            </div>
+                <a href="#" id="AddMoreFiles" class="btn btn-primary">Add More Buttons</a>
 
-                <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
-                    {{ Form::submit('Create',array('class'=>'btn btn-lg btn-primary btn-block')); }}
-                    </div>
-                </div>
+                <div id="InputWrapper"></div>
+
+  	            <div class="form-group">
+  	              <label for="avatar" class="col-lg-4 control-label">Display Image</label>
+  	              <div class="col-lg-8">
+  	                <input type="hidden" id="avatar-hidden" name="avatar" value="">
+  	                <div id="upload_img" class="upload_img">
+  	                  <div class="userpic" style="background-image: '';">
+  	                     <div class="js-preview userpic__preview"></div>
+  	                  </div>
+  	                  <div class="btn btn-sm btn-primary js-fileapi-wrapper">
+  	                     <div class="js-browse">
+  	                        <span class="btn-txt">Choose</span>
+  	                        <input type="file" name="filedata">
+  	                     </div>
+  	                     <div class="js-upload" style="display: none;">
+  	                        <div class="progress progress-success"><div class="js-progress bar"></div></div>
+  	                        <span class="btn-txt">Uploading</span>
+  	                     </div>
+  	                  </div>
+  	                </div>
+  	              </div>
+  	            </div>
+
                 {{ Form::close()}}
            </div>
 		            

@@ -33,11 +33,22 @@ class TipRepository extends AbstractRepository implements TipRepositoryInterface
 	public function findAll($orderColumn = 'created_at', $orderDir = 'desc')	
 	{
 		$tips = $this->model
+					 ->leftJoin('users', 'users.id', '=', 'tips.user_id')
 					 ->orderBy($orderColumn, $orderDir)
-					 ->get();
+					 ->get([
+					 	'tips.id',
+					 	'title', 
+					 	'slug', 
+					 	'description', 
+					 	'username', 
+					 	'tips.created_at', 
+					 	'display_img'
+					 ]);
 
 		return $tips;
 	}
+
+
 
 	/**
 	 *Find the specified tip from the database.
@@ -60,18 +71,30 @@ class TipRepository extends AbstractRepository implements TipRepositoryInterface
 	{
 		$tip = $this->getNew();
 
-		$tip->title 		= $data['title'];
-		$tip->slug 			= Str::slug($tip->name, '-');
-		$tip->description 	= $data['description'];
 		$tip->user_id 		= $data['user_id'];
-
-		if ($data['filedata']  != '') {
-			// File::move(public_path().'/assets/img/uploads/temp/'.$data['filedata'], 'assets/img/uploads/'.$data['filedata']);
-
-			$tip->display_img = $data['filedata'];
-		}
+		$tip->display_img 	= $data['display_img'];
 
 		return $tip->save();
+	}
+
+	/**
+	 * Retrieve the comments associated with the specified tip.
+	 *
+	 * @return bool|object
+	 * @param mixed $id
+	 **/
+	public function findCommentsByTip($id, $orderColumn = 'created_at', $orderDir = 'desc')
+	{
+		$comments = $this->model
+						 ->leftJoin('comments', 'comments.post_id', '=', 'tips.id')
+						 ->leftJoin('users', 'users.id', '=', 'comments.user_id')
+						 ->orderBy($orderColumn, $orderDir)
+						 ->get([
+						 	'content', 
+						 	'comments.created_at', 
+						 	'username'
+						 ]);
+		return $comments;
 	}
 
 	/**
